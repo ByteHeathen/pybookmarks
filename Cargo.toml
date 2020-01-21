@@ -1,0 +1,15 @@
+[package]
+name = "pybookmarks"
+version = "0.1.0"
+edition = "2018"
+
+[lib]
+name = "pybookmarks"
+crate-type = ["cdylib"]
+
+[dependencies]
+libbookmarks = { path = "../libbookmarks", features = ["pyo3"] }
+
+[dependencies.pyo3]
+version = "0.9.0-alpha.1"
+features = ["extension-module"]
