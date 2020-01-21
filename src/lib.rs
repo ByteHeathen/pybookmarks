@@ -10,7 +10,7 @@ pub use folder::Folder;
 mod bookmark;
 pub use bookmark::BookMark;
 
-/// This module is a python module implemented in Rust.
+/// libbookmarks is a Rust library for managing bookmarks statically.
 #[pymodule]
 fn libpybookmarks(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<Tag>()?;
