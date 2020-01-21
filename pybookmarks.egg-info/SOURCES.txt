@@ -1,0 +1,14 @@
+Cargo.toml
+MANIFEST.in
+pyproject.toml
+setup.py
+pybookmarks/__init__.py
+pybookmarks.egg-info/PKG-INFO
+pybookmarks.egg-info/SOURCES.txt
+pybookmarks.egg-info/dependency_links.txt
+pybookmarks.egg-info/not-zip-safe
+pybookmarks.egg-info/top_level.txt
+src/bookmark.rs
+src/folder.rs
+src/lib.rs
+src/tag.rs

@@ -12,7 +12,7 @@ pub use bookmark::BookMark;
 
 /// libbookmarks is a Rust library for managing bookmarks statically.
 #[pymodule]
-fn libpybookmarks(_py: Python, m: &PyModule) -> PyResult<()> {
+fn pybookmarks(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<Tag>()?;
     m.add_class::<Folder>()?;
     m.add_class::<BookMark>()?;
