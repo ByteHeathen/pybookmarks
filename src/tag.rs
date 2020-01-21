@@ -47,6 +47,25 @@ impl Tag {
     }
 
     #[staticmethod]
+    /// Remove a particular `Tag` by its id.
+    ///
+    /// @parameter = id: i32
+    /// @parameter = database_path: Option<String>
+    fn remove_tag(id: i32, database_path: Option<String>) -> PyResult<()> {
+        let api = BookMarksApi::new(database_path)?;
+        api.remove_tag(id)?;
+        Ok(())
+    }
+
+    /// Delete this particular `Tag`.
+    ///
+    /// @parameter = database_path: Option<String>
+    fn delete(&self, database_path: Option<String>) -> PyResult<()> {
+        Tag::remove_tag(self.id, database_path)?;
+        Ok(())
+    }
+
+    #[staticmethod]
     /// List all tags tracted by libbookmarks.
     ///
     /// @parameter = database_path: Option<String>

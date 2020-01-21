@@ -57,6 +57,25 @@ impl BookMark {
     }
 
     #[staticmethod]
+    /// Remove a particular `BookMark` by its id.
+    ///
+    /// @parameter = id: i32
+    /// @parameter = database_path: Option<String>
+    fn remove_bookmark(id: i32, database_path: Option<String>) -> PyResult<()> {
+        let api = BookMarksApi::new(database_path)?;
+        api.remove_bookmark(id)?;
+        Ok(())
+    }
+
+    /// Delete this particular `BookMark`.
+    ///
+    /// @parameter = database_path: Option<String>
+    fn delete(&self, database_path: Option<String>) -> PyResult<()> {
+        BookMark::remove_bookmark(self.id, database_path)?;
+        Ok(())
+    }
+
+    #[staticmethod]
     /// Create a new BookMark object.
     ///
     /// @parameter = url: String

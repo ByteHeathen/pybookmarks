@@ -50,6 +50,25 @@ impl Folder {
     }
 
     #[staticmethod]
+    /// Remove a particular `Folder` by its id.
+    ///
+    /// @parameter = id: i32
+    /// @parameter = database_path: Option<String>
+    fn remove_folder(id: i32, database_path: Option<String>) -> PyResult<()> {
+        let api = BookMarksApi::new(database_path)?;
+        api.remove_folder(id)?;
+        Ok(())
+    }
+
+    /// Delete this particular `Folder`.
+    ///
+    /// @parameter = database_path: Option<String>
+    fn delete(&self, database_path: Option<String>) -> PyResult<()> {
+        Folder::remove_folder(self.id, database_path)?;
+        Ok(())
+    }
+
+    #[staticmethod]
     /// Create a new bookmark object.
     ///
     /// @parameter = label: String
