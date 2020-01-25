@@ -106,7 +106,8 @@ impl Tag {
                 id: item.id,
                 url: item.url.clone(),
                 label: item.label.clone(),
-                folder: item.folder
+                folder: item.folder,
+                starred: item.starred
             }
         }).collect())
     }

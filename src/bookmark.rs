@@ -18,7 +18,9 @@ pub struct BookMark {
     pub(crate) label: Option<String>,
     /// The folder this bookmark belongs to.
     #[pyo3(get, set)]
-    pub(crate) folder: Option<i32>
+    pub(crate) folder: Option<i32>,
+    #[pyo3(get, set)]
+    pub(crate) starred: bool
 }
 
 #[pymethods]
@@ -35,7 +37,8 @@ impl BookMark {
                 id: item.id,
                 url: item.url.clone(),
                 label: item.label.clone(),
-                folder: item.folder
+                folder: item.folder,
+                starred: item.starred
             }
         }).collect())
     }
@@ -52,7 +55,8 @@ impl BookMark {
             id: raw_bookmark.id,
             url: raw_bookmark.url,
             label: raw_bookmark.label,
-            folder: raw_bookmark.folder
+            folder: raw_bookmark.folder,
+            starred: raw_bookmark.starred
         })
     }
 
@@ -81,10 +85,11 @@ impl BookMark {
     /// @parameter = url: String
     /// @parameter = label: Option<String>
     /// @parameter = folder: Option<i32>
+    /// @parameter = starred: bool
     /// @parameter = database_path: Option<String>
-    fn create(url: String, label: Option<String>, folder: Option<i32>, database_path: Option<String>) -> PyResult<()> {
+    fn create(url: String, label: Option<String>, folder: Option<i32>, starred: bool, database_path: Option<String>) -> PyResult<()> {
         let api = BookMarksApi::new(database_path)?;
-        let raw_bookmark = NewBookMark { url, label, folder };
+        let raw_bookmark = NewBookMark { url, label, folder, starred };
         api.create_bookmark(raw_bookmark)?;
         Ok(())
     }
@@ -123,6 +128,7 @@ impl BookMark {
         bookmark.url = self.url.clone();
         bookmark.label = self.label.clone();
         bookmark.folder = self.folder;
+        bookmark.starred = self.starred;
         bookmark.save(&api)?;
         Ok(())
     }
