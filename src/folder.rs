@@ -7,6 +7,7 @@ use libbookmarks::NewFolder;
 #[pyclass]
 pub struct Folder {
     /// Unique identifier for this folder.
+    #[pyo3(get)]
     pub(crate) id: i32,
     /// Label used when displaying this folder.
     #[pyo3(get, set)]

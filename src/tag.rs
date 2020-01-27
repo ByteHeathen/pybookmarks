@@ -6,6 +6,7 @@ use libbookmarks::NewTag;
 /// Tag used to organize bookmarks.
 pub struct Tag {
     /// Unique identifier for this tag.
+    #[pyo3(get)]
     pub(crate) id: i32,
     /// Label used when displaying this tag.
     #[pyo3(get, set)]

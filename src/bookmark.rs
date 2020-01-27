@@ -9,6 +9,7 @@ use crate::Tag;
 #[pyclass]
 pub struct BookMark {
     /// Unique identifier for this bookmark.
+    #[pyo3(get)]
     pub(crate) id: i32,
     /// the url this bookmark links to.
     #[pyo3(get, set)]
