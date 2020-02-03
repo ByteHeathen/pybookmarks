@@ -2,6 +2,7 @@ use pyo3::prelude::*;
 
 use libbookmarks::BookMarksApi;
 use libbookmarks::NewBookMark;
+use libbookmarks::models::BookMark as RawBookMark;
 
 use crate::Tag;
 
@@ -59,6 +60,78 @@ impl BookMark {
             folder: raw_bookmark.folder,
             starred: raw_bookmark.starred
         })
+    }
+
+    #[staticmethod]
+    /// Find all bookmarks with a particular url.
+    ///
+    /// @parameter = url: String
+    /// @parameter = database_path: Option<String>
+    fn find_url(url: String, database_path: Option<String>) -> PyResult<Vec<BookMark>> {
+        let api = BookMarksApi::new(database_path)?;
+        Ok(RawBookMark::find_url(&api, &url)?.into_iter().map(|raw_bookmark| {
+            BookMark {
+                id: raw_bookmark.id,
+                url: raw_bookmark.url,
+                label: raw_bookmark.label,
+                folder: raw_bookmark.folder,
+                starred: raw_bookmark.starred
+            }
+        }).collect())
+    }
+
+    #[staticmethod]
+    /// Find all bookmarks with a particular label.
+    ///
+    /// @parameter = label: String
+    /// @parameter = database_path: Option<String>
+    fn find_label(label: String, database_path: Option<String>) -> PyResult<Vec<BookMark>> {
+        let api = BookMarksApi::new(database_path)?;
+        Ok(RawBookMark::find_label(&api, label.as_ref())?.into_iter().map(|raw_bookmark| {
+            BookMark {
+                id: raw_bookmark.id,
+                url: raw_bookmark.url,
+                label: raw_bookmark.label,
+                folder: raw_bookmark.folder,
+                starred: raw_bookmark.starred
+            }
+        }).collect())
+    }
+
+    #[staticmethod]
+    /// Find all bookmarks with a certain folder.
+    ///
+    /// @parameter = folder: i32
+    /// @parameter = database_path: Option<String>
+    fn find_folder(folder: i32, database_path: Option<String>) -> PyResult<Vec<BookMark>> {
+        let api = BookMarksApi::new(database_path)?;
+        Ok(RawBookMark::find_folder(&api, folder)?.into_iter().map(|raw_bookmark| {
+            BookMark {
+                id: raw_bookmark.id,
+                url: raw_bookmark.url,
+                label: raw_bookmark.label,
+                folder: raw_bookmark.folder,
+                starred: raw_bookmark.starred
+            }
+        }).collect())
+    }
+
+    #[staticmethod]
+    /// Find all bookmarks that are starred.
+    ///
+    /// @parameter = folder: bool
+    /// @parameter = database_path: Option<String>
+    fn find_starred(starred: bool, database_path: Option<String>) -> PyResult<Vec<BookMark>> {
+        let api = BookMarksApi::new(database_path)?;
+        Ok(RawBookMark::find_starred(&api, starred)?.into_iter().map(|raw_bookmark| {
+            BookMark {
+                id: raw_bookmark.id,
+                url: raw_bookmark.url,
+                label: raw_bookmark.label,
+                folder: raw_bookmark.folder,
+                starred: raw_bookmark.starred
+            }
+        }).collect())
     }
 
     #[staticmethod]
