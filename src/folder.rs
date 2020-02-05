@@ -69,6 +69,36 @@ impl Folder {
         Ok(())
     }
 
+    /// Delete this particular `Folder`.
+    ///
+    /// @parameter = database_path: Option<String>
+    fn children(&self, database_path: Option<String>) -> PyResult<Vec<Folder>> {
+        let api = BookMarksApi::new(database_path)?;
+        Ok(api.get_folder_children(self.id)?.iter().map(|item| {
+            Folder {
+                id: item.id,
+                label: item.label.clone(),
+                parent: item.parent
+            }
+        }).collect())
+    }
+
+    /// Delete this particular `Folder`.
+    ///
+    /// @parameter = database_path: Option<String>
+    fn bookmarks(&self, database_path: Option<String>) -> PyResult<Vec<crate::BookMark>> {
+        let api = BookMarksApi::new(database_path)?;
+        Ok(api.get_folder_bookmarks(self.id)?.iter().map(|item| {
+            crate::BookMark {
+                id: item.id,
+                label: item.label.clone(),
+                url: item.url.clone(),
+                folder: item.folder,
+                starred: item.starred
+            }
+        }).collect())
+    }
+
     #[staticmethod]
     /// Create a new bookmark object.
     ///

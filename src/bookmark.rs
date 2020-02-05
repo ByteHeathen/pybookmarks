@@ -135,6 +135,23 @@ impl BookMark {
     }
 
     #[staticmethod]
+    /// Find all bookmarks without a folder.
+    ///
+    /// @parameter = database_path: Option<String>
+    fn find_unfoldered(database_path: Option<String>) -> PyResult<Vec<BookMark>> {
+        let api = BookMarksApi::new(database_path)?;
+        Ok(RawBookMark::find_unfoldered(&api)?.into_iter().map(|raw_bookmark| {
+            BookMark {
+                id: raw_bookmark.id,
+                url: raw_bookmark.url,
+                label: raw_bookmark.label,
+                folder: raw_bookmark.folder,
+                starred: raw_bookmark.starred
+            }
+        }).collect())
+    }
+
+    #[staticmethod]
     /// Remove a particular `BookMark` by its id.
     ///
     /// @parameter = id: i32
@@ -161,11 +178,19 @@ impl BookMark {
     /// @parameter = folder: Option<i32>
     /// @parameter = starred: bool
     /// @parameter = database_path: Option<String>
-    fn create(url: String, label: Option<String>, folder: Option<i32>, starred: bool, database_path: Option<String>) -> PyResult<()> {
+    ///
+    /// @return = BookMark
+    fn create(url: String, label: Option<String>, folder: Option<i32>, starred: bool, database_path: Option<String>) -> PyResult<BookMark> {
         let api = BookMarksApi::new(database_path)?;
         let raw_bookmark = NewBookMark { url, label, folder, starred };
-        api.create_bookmark(raw_bookmark)?;
-        Ok(())
+        let new_bookmark = api.create_bookmark(raw_bookmark)?;
+        Ok(BookMark {
+            id: new_bookmark.id,
+            label: new_bookmark.label,
+            url: new_bookmark.url,
+            folder: new_bookmark.folder,
+            starred: new_bookmark.starred
+        })
     }
 
     /// Assign a new tag to this bookmark.
